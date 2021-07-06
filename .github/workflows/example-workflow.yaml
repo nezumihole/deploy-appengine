@@ -26,6 +26,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: debug REPO_SECRET
+        shell: bash
+        env:
+          REPO_SECRET: ${{ secrets.REPO_SECRET }}
+        run: |
+          echo "$REPO_SECRET"
+      - name: debug ENV_SECRET
+        shell: bash
+        env:
+          ENV_SECRET: ${{ secrets.GCP_PROJECT }}
+        run: |
+          echo "$ENV_SECRET"
       - name: Deploy to App Engine
         id: deploy
         uses: google-github-actions/deploy-appengine@v0.4.0
