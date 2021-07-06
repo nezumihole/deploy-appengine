@@ -4,15 +4,24 @@ on: [push, pull_request]
 
 jobs:
   run:
-    name: deploy-appengine-go
-    runs-on: ubuntu-latest
+    name: deploy-appengine
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-      - uses: actions/checkout@v2
-      - name: Deploy an App Engine app
-        id: deploy-app
-        uses: google-github-actions/deploy-appengine@v0.4.0
-        with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-          deliverables: app.yaml
-          credentials: ${{ secrets.GCP_SA_KEY }}
-          version: v1
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@master
+      with:
+        node-version: 12.x
+    - name: npm install
+      run: npm install
+
+    - name: npm lint
+      run: npm run lint
+
+    - name: npm test
+      run: npm run test
+      
+    - name: npm build
+      run: npm run build
