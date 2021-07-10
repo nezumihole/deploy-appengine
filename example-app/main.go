@@ -14,8 +14,5 @@ func main() {
 		}
 	})
 
-	err := http.ListenAndServe(":8080", nil)
-	if err != nil {
-		return
-	}
+	http.ListenAndServe(":8080", nil)
 }
